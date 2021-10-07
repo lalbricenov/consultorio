@@ -4,16 +4,16 @@ package logica;
  *
  * @author ESSAR
  */
-public class antecedente_medico {
+public class Antecedente_medico {
     private int id_antecedente;
     private String nombre;
 
-    public antecedente_medico() {
+    public Antecedente_medico() {
     }
 
-    public antecedente_medico(int id_antecedente, String nombre) {
-        this.id_antecedente = id_antecedente;
-        this.nombre = nombre;
+    public Antecedente_medico(int id_antecedente, String nombre) {
+        setId_antecedente(id_antecedente);
+        setNombre(nombre);
     }
 
     public int getId_antecedente() {

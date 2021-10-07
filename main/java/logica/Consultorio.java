@@ -16,10 +16,10 @@ public class Consultorio {
     }
 
     public Consultorio(int id_consultorio, String nombre, String direccion, String telefono) {
-        this.id_consultorio = id_consultorio;
-        this.nombre = nombre;
-        this.direccion = direccion;
-        this.telefono = telefono;
+        setId_consultorio(id_consultorio);
+        setNombre(nombre);
+        setDireccion(direccion);
+        setTelefono(telefono);
     }
 
     public int getId_consultorio() {

@@ -5,18 +5,18 @@ package logica;
  *
  * @author ESSAR
  */
-public class medicamento {
+public class Medicamento {
     private int id_medicamentos;
     private String nombre;
     private String presentacion;
 
-    public medicamento() {
+    public Medicamento() {
     }
 
-    public medicamento(int id_medicamentos, String nombre, String presentacion) {
-        this.id_medicamentos = id_medicamentos;
-        this.nombre = nombre;
-        this.presentacion = presentacion;
+    public Medicamento(int id_medicamentos, String nombre, String presentacion) {
+        setId_medicamentos(id_medicamentos);
+        setNombre(nombre);
+        setPresentacion(presentacion);
     }
 
     public int getId_medicamentos() {
