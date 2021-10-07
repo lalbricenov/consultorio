@@ -4,7 +4,7 @@ package logica;
  *
  * @author ESSAR
  */
-public class antecedente_medico {
+public class Antecedente_medico {
     private int id_antecedente;
     private String nombre;
 
