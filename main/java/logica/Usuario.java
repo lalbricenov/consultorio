@@ -5,11 +5,14 @@
  */
 package logica;
 
+import java.sql.SQLException;
+import persistencia.ConexionBD;
+
 /**
  *
  * @author lalbr
  */
-public class Usuario {
+public final class Usuario {
      // Configuracion de la conexion a la base de datos 
     private String id_usuario;
     private String correo;
@@ -22,6 +25,11 @@ public class Usuario {
 
     public Usuario() {
         this.correo_verificado = false;
+    }
+    public Usuario getUsuario(String usuario)throws SQLException{
+        this.id_usuario=usuario;
+        return this.getUsuario();
+        
     }
     public Usuario(String id, String correo, String numTel, String pass, boolean corrVerif, String nombres, String apellidos) {
         setId_usuario(id);
@@ -89,7 +97,23 @@ public class Usuario {
         this.apellidos = apellidos;
     }
     
-    public String userString(){
-        return this.getApellidos();
+    public void llenarUsuario(String id, String correo, String numTel, String pass, boolean corrVerif, String nombres, String apellidos){
+        this.id_usuario=id;
+        this.correo=correo;
+        this.num_telefono=numTel;
+        this.password=pass;
+        this.correo_verificado=corrVerif;
+        this.nombres=nombres;
+        this.apellidos=apellidos;
+        
     }
+    public boolean guardarUsuario(){
+        System.out.println("bien");
+        ConexionBD conexion=new ConexionBD();
+        String sentencia="INSERT INTO Usuario(id_usuario,correo,num_telefono,password,correo_verificado,nombres,apellidos,edad)"
+                +"VALUE('"+this.id_usuario+"'
+        
+    
+    }
+    
 }
