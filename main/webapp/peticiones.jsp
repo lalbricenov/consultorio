@@ -1,102 +1,95 @@
 <%-- 
-    Document   : peticiones
-    Created on : Sep 29, 2021, 9:55:33 PM
-    Author     : lalbr
---%>
+    Document   : Peticiones
+    Created on : 28/09/2021, 8:31:11 p.Â m.
+    Author     : BMPI
+--%><%@page import="logica.Usuario"%>
 
+//importar librerias
 <%@page import="java.util.logging.Logger"%>
 <%@page import="java.util.logging.Level"%>
-<%@page import="com.google.gson.Gson"%>
+<%@page import="java.sql.SQLException"%>
+<%@page import="logica.Contacto"%>
 <%@page import="java.util.Arrays"%>
 <%@page import="java.util.List"%>
+<%@page import="com.google.gson.Gson"%>
 <%@page import="java.util.ArrayList"%>
-<%@page contentType="application/json;charset=iso-8859-1" language="java"
-        pageEncoding="iso-8859-1" session="true"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 
-<% // Iniciando respuesta JSON. 
-    String respuesta = "{";
-//Lista de procesos o tareas a realizar
-    List<String> tareas = Arrays.asList(new String[]{
-        "guardar",
-        "eliminar",
-        "actualizar",
-        "listar"
-    });
-    String proceso = "" + request.getParameter("proceso");
-// Validación de parámetros utilizados en todos los procesos.
-    if (tareas.contains(proceso)) {
-        respuesta += "\"ok\": true,";
-// -------------------------------------------------------------------------------------
-//
-// -----------------------------------INICIO PROCESOS-----------------------------------
-//
-// -------------------------------------------------------------------------------------
-//
-        if (proceso.equals("guardar")) {
-//Solicitud de parámetros enviados desde el frontend
-//, uso de request.getParameter("nombre parametro")
-// creación de objeto y llamado a método guardar
-            if (guardar()) {
-                respuesta += "\"" + proceso + "\": true";
-            } else {
-                respuesta += "\"" + proceso + "\": false";
+<%//iniciar respuesta JSon
+        Usuario u1 = new Usuario();
+        String respuesta = "{";
+        List<String> tareas = Arrays.asList(new String[]{
+            "actualizarUsuario",
+            "eliminarUsuario",
+            "listarUsuario",
+            "guardarUsuario",});
+
+        String proceso = "" + request.getParameter("proceso");
+
+//validacion de parametros utilizando en cada uno de los procesos
+        if (tareas.contains(proceso)) {
+            respuesta += "\"ok\": true,";
+            //iniciar los respectivos procesos
+            if (proceso.equals("guardarUsuario")) {
+                int id = Integer.parseInt(request.getParameter("id"));
+                String correo = request.getParameter("correo");
+                String num_telefono = request.getParameter("num_telefono");
+                String password = request.getParameter("password");
+                Boolean correo_verificado = Boolean.parseBoolean(request.getParameter("correo_verificado"));
+                String nombres = request.getParameter("nombres");
+                String apellidos = request.getParameter("apellidos");
+                int edad = Integer.parseInt(request.getParameter("edad"));
+
+                u1.actualizarUsuario(correo, num_telefono, password, correo_verificado, nombres, apellidos, edad);
+
+                if (u1.guardarUsuario()) {
+                    respuesta += "\"" + proceso + "\": true";
+                } else {
+                    respuesta += "\"" + proceso + "\": false";
+                }
+
+            } else if (proceso.equals("eliminarUsuario")) {
+                int id = Integer.parseInt(request.getParameter("id"));
+                if (u1.borrarUsuario(id)) {
+                    respuesta += "\"" + proceso + "\": true";
+                } else {
+                    respuesta += "\"" + proceso + "\": false";
+                }
+            } else if (proceso.equals(listarUsuario)) {
+                try {
+                    List<Usuario> lista = u1.listarUsuarios();
+                    respuesta += "\"" + proceso + "\": true,\"Usuarios\":" + new Gson().toJson(lista);
+                } catch (SQLException ex) {
+                    respuesta += "\"" + proceso + "\": true,\"Usuarios\":[]";
+                    Logger.getLogger(Usuario.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else if (proceso.equals("actualizarUsuario")) {
+                int id = Integer.parseInt(request.getParameter("id"));
+                String correo = request.getParameter("correo");
+                String num_telefono = request.getParameter("num_telefono");
+                String password = request.getParameter("password");
+                Boolean correo_verificado = Boolean.parseBoolean(request.getParameter("correo_verificado"));
+                String nombres = request.getParameter("nombres");
+                String apellidos = request.getParameter("apellidos");
+                int edad = Integer.parseInt(request.getParameter("edad"));
+
+                u1.actualizarUsuario(correo, num_telefono, password, correo_verificado, nombres, apellidos, edad);
+
+                if (u1.actualizarUsuario()) {
+                    respuesta += "\"" + proceso + "\": true";
+                } else {
+                    respuesta += "\"" + proceso + "\": false";
+                }
             }
-        } else if (proceso.equals("eliminar")) {
-//Solicitud de parámetros enviados desde el frontned
-//, uso de request.getParameter("nombre parametro")
-//creación de objeto y llamado a método eliminar
-            if (<llamado 
-                
-                
-                a metodo eliminar >
-            
-            
-            
-                ) {
-respuesta += "\"" + proceso + "\": true";
-            }else {
-respuesta += "\"" + proceso + "\": false";
-}
-        } else if (proceso.equals("listar")) {
-//Solicitud de parámetros enviados desde el frontned
-//, uso de request.getParameter("nombre parametro")
-//creación de objeto y llamado al metodo listar
-            try {
-                List<TipoObjeto> lista = llamado a metodo que retorne lista;
-                respuesta += "\"" + proceso + "\": true,\"NombreLista\":" + new Gson().toJson(lista);
-            } catch (SQLException ex) {
-                respuesta += "\"" + proceso + "\": true,\"NombreLista\":[]";
-                Logger.getLogger(Contacto.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else if (proceso.equals("actualizar")) {
-//creación de objeto y llamado al metodo actualizar
-            if (<llamado 
-                
-                
-                a metodo actualizar >
-            
-            
-            
-                ) {
-respuesta += "\"" + proceso + "\": true";
-            }else {
-respuesta += "\"" + proceso + "\": false";
-}
+
+        } else {
+            respuesta += "\"ok\":false,";
+            respuesta += "\"error\": \"INVALID\",";
+            respuesta += "\"errorMsg\": \"lo sentimos, los datos que ha enviado,"
+                    + " son invalidos. Corijalos y vuelva a intentar por favor. \"";
         }
-// ------------------------------------------------------------------------------------- //
-// -----------------------------------FIN PROCESOS--------------------------------------
-//
-// -------------------------------------------------------------------------------------
-//
-// Proceso desconocido.
-    } else {
-        respuesta += "\"ok\": false,";
-        respuesta += "\"error\": \"INVALID\",";
-        respuesta += "\"errorMsg\": \"Lo sentimos, los datos que ha enviado,"
-                + " son inválidos. Corrijalos y vuelva a intentar por favor.\"";
-    }
-// Responder como objeto JSON codificación ISO 8859-1.
-    respuesta += "}";
-    response.setContentType("application/json;charset=iso-8859-1");
-    out.print(respuesta);
-%>
+
+    respuesta += "}" ;
+    response.setContentType ("application/json;charset=iso-8859-1");
+    out.print (respuesta);
+%>   
