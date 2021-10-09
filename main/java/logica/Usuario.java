@@ -24,6 +24,7 @@ public final class Usuario {
     private boolean correo_verificado;
     private String nombres;
     private String apellidos;
+    private String fechaNacimiento;
     //Constructor sin parmetros		
 
     public Usuario() {
@@ -34,7 +35,7 @@ public final class Usuario {
         return this.getUsuario();
         
     }
-    public Usuario(String id, String correo, String numTel, String pass, boolean corrVerif, String nombres, String apellidos) {
+    public Usuario(String id, String correo, String numTel, String pass, boolean corrVerif, String nombres, String apellidos, String fechaNacimiento) {
         setId_usuario(id);
         setCorreo(correo);
         setNum_telefono(numTel);
@@ -42,6 +43,7 @@ public final class Usuario {
         setCorreo_verificado(corrVerif);
         setNombres(nombres);
         setApellidos(apellidos);
+        setFechaNacimiento(fechaNacimiento);
     }
     
     public String getId_usuario() {
@@ -76,14 +78,19 @@ public final class Usuario {
         this.password = password;
     }
 
-    public boolean isCorreo_verificado() {
-        return correo_verificado;
+    public int getCorreo_verificado() {
+        return correo_verificado? 1 : 0;
     }
 
     public void setCorreo_verificado(boolean correo_verificado) {
         this.correo_verificado = correo_verificado;
     }
-
+    public String getFechaNacimiento(){
+        return this.fechaNacimiento;
+    }
+    public void setFechaNacimiento(String fechaNac){
+        this.fechaNacimiento = fechaNac;
+    }
     public String getNombres() {
         return nombres;
     }
@@ -100,22 +107,22 @@ public final class Usuario {
         this.apellidos = apellidos;
     }
     
-    public void llenarUsuario(String id, String correo, String numTel, String pass, boolean corrVerif, String nombres, String apellidos){
-        this.id_usuario=id;
-        this.correo=correo;
-        this.num_telefono=numTel;
-        this.password=pass;
-        this.correo_verificado=corrVerif;
-        this.nombres=nombres;
-        this.apellidos=apellidos;
+    // public void llenarUsuario(String id, String correo, String numTel, String pass, boolean corrVerif, String nombres, String apellidos){
+    //     this.id_usuario=id;
+    //     this.correo=correo;
+    //     this.num_telefono=numTel;
+    //     this.password=pass;
+    //     this.correo_verificado=corrVerif;
+    //     this.nombres=nombres;
+    //     this.apellidos=apellidos;
         
-    }
+    // }
     public boolean guardarUsuario(){
-        System.out.println("bien");
         ConexionBD conexion=new ConexionBD();
-        String sentencia="INSERT INTO usuarios(id_usuario,correo,num_telefono,password,correo_verificado,nombres,apellidos) "
-                +"VALUE('"+this.id_usuario+"','"+this.correo+"','"+this.num_telefono+"','"+this.password+"','"+correo_verificado+"',"
-                +"'"+this.nombres+"','"+this.apellidos+"'); ";
+        String sentencia="INSERT INTO usuarios(id_usuario,correo,num_telefono,password,correo_verificado,nombres,apellidos, fecha_nacimiento) "
+                +"VALUE('"+getId_usuario()+"','"+getCorreo()+"','"+getNum_telefono()+"','"+getPassword()+"','"+getCorreo_verificado()+"',"
+                +"'"+getNombres()+"','"+getApellidos()+"', '"+getFechaNacimiento() + "'); ";
+        System.out.println(sentencia);
         if (conexion.setAutoCommitBD(false)){
             if(conexion.insertarBD(sentencia)){
                 conexion.commitBD();

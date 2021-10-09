@@ -30,24 +30,34 @@
         if (tareas.contains(proceso)) {
             respuesta += "\"ok\": true,";
             //iniciar los respectivos procesos
-            if (proceso.equals("guardarUsuario")) {                
-                String id = request.getParameter("id");
+            if (proceso.equals("guardarUsuario")) { 
+                System.out.println("Se está tratando de guardar un usuario");
+                String tipoDoc = request.getParameter("tipoDoc");
+                String numDoc = request.getParameter("numDoc");
+                String id = tipoDoc + numDoc;
                 String correo = request.getParameter("correo");
-                String num_telefono = request.getParameter("num_telefono");
-                String password = request.getParameter("password");
-                Boolean correo_verificado = Boolean.parseBoolean(request.getParameter("correo_verificado"));
-                String nombres = request.getParameter("nombres");
-                String apellidos = request.getParameter("apellidos");
-                int edad = Integer.parseInt(request.getParameter("edad"));
+                String num_telefono = request.getParameter("numTel");
+                String password = request.getParameter("pass");
+                String passVerif = request.getParameter("passVerif");
                 
-                u1.llenarUsuario(id, correo, num_telefono, password, correo_verificado, nombres, apellidos);
+                if (password.equals(passVerif))
+                {
+                    Boolean correo_verificado = false;
+                    String nombres = request.getParameter("nombres");
+                    String apellidos = request.getParameter("apellidos");
+                    String fechaNacimiento = request.getParameter("fechaNacimiento");
+                    u1 = new Usuario(id, correo, num_telefono, password, correo_verificado, nombres, apellidos, fechaNacimiento);
 
-                
-                if (u1.guardarUsuario()) {
-                    respuesta += "\"" + proceso + "\": true";
-                } else {
+                    if (u1.guardarUsuario()) {
+                        respuesta += "\"" + proceso + "\": true";
+                    } else {
+                        respuesta += "\"" + proceso + "\": false";
+                    }
+                }else{
+                    System.out.println("Error, las claves no coinciden");
                     respuesta += "\"" + proceso + "\": false";
                 }
+                
 
             } else if (proceso.equals("eliminarUsuario")) {
                 int id = Integer.parseInt(request.getParameter("id"));
