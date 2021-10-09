@@ -8,7 +8,7 @@
 <%@page import="java.util.logging.Logger"%>
 <%@page import="java.util.logging.Level"%>
 <%@page import="java.sql.SQLException"%>
-<%@page import="logica.Contacto"%>
+<%@page import="logica.Usuario"%>
 <%@page import="java.util.Arrays"%>
 <%@page import="java.util.List"%>
 <%@page import="com.google.gson.Gson"%>
@@ -30,8 +30,8 @@
         if (tareas.contains(proceso)) {
             respuesta += "\"ok\": true,";
             //iniciar los respectivos procesos
-            if (proceso.equals("guardarUsuario")) {
-                int id = Integer.parseInt(request.getParameter("id"));
+            if (proceso.equals("guardarUsuario")) {                
+                String id = request.getParameter("id");
                 String correo = request.getParameter("correo");
                 String num_telefono = request.getParameter("num_telefono");
                 String password = request.getParameter("password");
@@ -39,9 +39,10 @@
                 String nombres = request.getParameter("nombres");
                 String apellidos = request.getParameter("apellidos");
                 int edad = Integer.parseInt(request.getParameter("edad"));
+                
+                u1.llenarUsuario(id, correo, num_telefono, password, correo_verificado, nombres, apellidos);
 
-                u1.actualizarUsuario(correo, num_telefono, password, correo_verificado, nombres, apellidos, edad);
-
+                
                 if (u1.guardarUsuario()) {
                     respuesta += "\"" + proceso + "\": true";
                 } else {
@@ -50,14 +51,14 @@
 
             } else if (proceso.equals("eliminarUsuario")) {
                 int id = Integer.parseInt(request.getParameter("id"));
-                if (u1.borrarUsuario(id)) {
+                if (u1.borrarUsuario("id")) {
                     respuesta += "\"" + proceso + "\": true";
                 } else {
                     respuesta += "\"" + proceso + "\": false";
                 }
-            } else if (proceso.equals(listarUsuario)) {
+            } else if (proceso.equals("listarUsuario")) {
                 try {
-                    List<Usuario> lista = u1.listarUsuarios();
+                    List<Usuario> lista = u1.ListarUsuarios();
                     respuesta += "\"" + proceso + "\": true,\"Usuarios\":" + new Gson().toJson(lista);
                 } catch (SQLException ex) {
                     respuesta += "\"" + proceso + "\": true,\"Usuarios\":[]";
@@ -72,8 +73,9 @@
                 String nombres = request.getParameter("nombres");
                 String apellidos = request.getParameter("apellidos");
                 int edad = Integer.parseInt(request.getParameter("edad"));
-
-                u1.actualizarUsuario(correo, num_telefono, password, correo_verificado, nombres, apellidos, edad);
+                
+                u1.actualizarUsuario();
+                
 
                 if (u1.actualizarUsuario()) {
                     respuesta += "\"" + proceso + "\": true";

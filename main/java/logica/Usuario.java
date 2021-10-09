@@ -5,7 +5,10 @@
  */
 package logica;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import persistencia.ConexionBD;
 
 /**
@@ -110,10 +113,108 @@ public final class Usuario {
     public boolean guardarUsuario(){
         System.out.println("bien");
         ConexionBD conexion=new ConexionBD();
-        String sentencia="INSERT INTO Usuario(id_usuario,correo,num_telefono,password,correo_verificado,nombres,apellidos,edad)"
-                +"VALUE('"+this.id_usuario+"'
-        
-    
+        String sentencia="INSERT INTO usuarios(id_usuario,correo,num_telefono,password,correo_verificado,nombres,apellidos) "
+                +"VALUE('"+this.id_usuario+"','"+this.correo+"','"+this.num_telefono+"','"+this.password+"','"+correo_verificado+"',"
+                +"'"+this.nombres+"','"+this.apellidos+"'); ";
+        if (conexion.setAutoCommitBD(false)){
+            if(conexion.insertarBD(sentencia)){
+                conexion.commitBD();
+                conexion.cerrarConexion();
+                return true;
+            } else {
+                conexion.rollbackBD();
+                conexion.cerrarConexion();
+                return false;
+            }
+        } else {
+            conexion.cerrarConexion();
+            return false;
+        }
     }
+    
+    public boolean borrarUsuario(String id_usuario){
+        String sentencia="DELETE FROM 'usuarios' WHERE 'id_usuario'='"+id_usuario+"'";
+        ConexionBD conexion=new ConexionBD();
+        if (conexion.setAutoCommitBD(false)){
+            if(conexion.actualizarBD(sentencia)){
+                conexion.commitBD();
+                conexion.cerrarConexion();
+                return true;
+            } else {
+                conexion.rollbackBD();
+                conexion.cerrarConexion();
+                return false;
+            }
+        } else {
+            conexion.cerrarConexion();
+            return false;
+        }
+    }
+    
+    public boolean actualizarUsuario(){
+        ConexionBD conexion=new ConexionBD();
+        String sentencia="UPDATE 'usuarios' SET correo='" +this.correo+ "',num_telefono='"+this.num_telefono+"',password='"+this.password+"',correo_verificado='"+correo_verificado+"',"
+                +"nombres='"+this.nombres+"',apellidos='"+this.apellidos+"' WHERE id_usuario=" +this.id_usuario+";";
+        if (conexion.setAutoCommitBD(false)){
+            if(conexion.actualizarBD(sentencia)){
+                conexion.commitBD();
+                conexion.cerrarConexion();
+                return true;
+            } else {
+                conexion.rollbackBD();
+                conexion.cerrarConexion();
+                return false;
+            }
+        } else {
+            conexion.cerrarConexion();
+            return false;
+        }
+    }
+    
+    public List<Usuario> ListarUsuarios() throws SQLException{
+        ConexionBD conexion=new ConexionBD();
+        List<Usuario> listaUsuarios = new ArrayList<>();
+        String sql="select *from usuarios order by id_usuarios asc";
+        ResultSet rs=conexion.consultarBD(sql);
+        Usuario u;
+        while (rs.next()){
+            u=new Usuario();
+            u.setId_usuario(rs.getString("id_usuario"));
+            u.setCorreo(rs.getString("correo"));
+            u.setNum_telefono(rs.getString("num_telefono"));
+            u.setPassword(rs.getString("password"));
+            u.setNombres(rs.getString("nombres"));
+            u.setApellidos(rs.getString("apellidos"));
+            listaUsuarios.add(u);
+        }
+        conexion.cerrarConexion();
+        return listaUsuarios;    
+    }
+    
+    public Usuario getUsuario() throws SQLException{
+        ConexionBD conexion=new ConexionBD();
+        String sql="select * from usuarios where id_usuarios='"+this.id_usuario+"'";
+        ResultSet rs=conexion.consultarBD(sql);
+        if (rs.next()){
+            this.id_usuario=rs.getString("id_usuario");
+            this.correo=rs.getString("correo");
+            this.num_telefono=rs.getString("num_telefono");
+            this.password=rs.getString("password");
+            this.nombres=rs.getString("nombres");
+            this.apellidos=rs.getString("apellidos");
+            conexion.cerrarConexion();
+            return this;        
+        } else {
+            conexion.cerrarConexion();
+            return null;
+        }
+    }
+    @Override
+    public String toString(){
+        return "Usuario{"+"id_usuario"+id_usuario+",correo="+correo+",num_telefono="+num_telefono+",password="+password+",nombres="+nombres+",apellidos="+apellidos+"";
+           
+    }
+    
+    
     
 }
