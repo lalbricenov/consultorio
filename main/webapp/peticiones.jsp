@@ -2,9 +2,12 @@
     Document   : Peticiones
     Created on : 28/09/2021, 8:31:11 p. m.
     Author     : BMPI
---%><%@page import="logica.Usuario"%>
+--%>
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.Map"%>
+<%@page import="logica.Usuario"%>
 
-//importar librerias
+
 <%@page import="java.util.logging.Logger"%>
 <%@page import="java.util.logging.Level"%>
 <%@page import="java.sql.SQLException"%>
@@ -17,7 +20,8 @@
 
 <%//iniciar respuesta JSon
         Usuario u1 = new Usuario();
-        String respuesta = "{";
+        Map<String, String> respuesta = new HashMap<>();
+        
         List<String> tareas = Arrays.asList(new String[]{
             "actualizarUsuario",
             "eliminarUsuario",
@@ -28,7 +32,7 @@
 
 //validacion de parametros utilizando en cada uno de los procesos
         if (tareas.contains(proceso)) {
-            respuesta += "\"ok\": true,";
+            respuesta.put("ok", "true");
             //iniciar los respectivos procesos
             if (proceso.equals("guardarUsuario")) { 
                 System.out.println("Se está tratando de guardar un usuario");
@@ -49,31 +53,34 @@
                     u1 = new Usuario(id, correo, num_telefono, password, correo_verificado, nombres, apellidos, fechaNacimiento);
 
                     if (u1.guardarUsuario()) {
-                        respuesta += "\"" + proceso + "\": true";
+                        respuesta.put(proceso, "true");
                     } else {
-                        respuesta += "\"" + proceso + "\": false";
+                        respuesta.put(proceso, "false");
                     }
                 }else{
                     System.out.println("Error, las claves no coinciden");
-                    respuesta += "\"" + proceso + "\": false";
+                    respuesta.put(proceso, "false");
                 }
                 
 
             } else if (proceso.equals("eliminarUsuario")) {
                 int id = Integer.parseInt(request.getParameter("id"));
                 if (u1.borrarUsuario("id")) {
-                    respuesta += "\"" + proceso + "\": true";
+                    respuesta.put(proceso, "true");
                 } else {
-                    respuesta += "\"" + proceso + "\": false";
+                    respuesta.put(proceso, "false");
                 }
             } else if (proceso.equals("listarUsuarios")) {
                 try {
                     System.out.println("Se está tratando de listar los usuarios");
                     List<Usuario> lista = u1.ListarUsuarios();
+                    respuesta.put(proceso, "true");
+                    
                     System.out.println(lista);
-                    respuesta += "\"" + proceso + "\": true,\"Usuarios\":" + new Gson().toJson(lista);
+                    respuesta.put("data", new Gson().toJson(lista) );
                 } catch (SQLException ex) {
-                    respuesta += "\"" + proceso + "\": false,\"Usuarios\":[]";
+                    respuesta.put(proceso, "false");
+                    respuesta.put("data", "[]");
                     Logger.getLogger(Usuario.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } else if (proceso.equals("actualizarUsuario")) {
@@ -90,20 +97,19 @@
                 
 
                 if (u1.actualizarUsuario()) {
-                    respuesta += "\"" + proceso + "\": true";
+                    respuesta.put(proceso, "true");
                 } else {
-                    respuesta += "\"" + proceso + "\": false";
+                    respuesta.put(proceso, "false");
                 }
             }
 
         } else {
-            respuesta += "\"ok\":false,";
-            respuesta += "\"error\": \"INVALID\",";
-            respuesta += "\"errorMsg\": \"lo sentimos, los datos que ha enviado,"
-                    + " son invalidos. Corijalos y vuelva a intentar por favor. \"";
+            respuesta.put("ok", "false");
+            respuesta.put("error", "InvalidRequest");
+            respuesta.put("errorMsg", "The type of request is invalid");
         }
-
-    respuesta += "}" ;
-    response.setContentType ("application/json;charset=iso-8859-1");
-    out.print (respuesta);
+    response.setContentType ("application/json;charset=utf-8");
+    System.out.println("Ya se va a mandar la respuesta");
+    System.out.println(respuesta);
+    out.print(new Gson().toJson(respuesta));
 %>   

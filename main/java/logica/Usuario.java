@@ -46,6 +46,12 @@ public final class Usuario {
         setFechaNacimiento(fechaNacimiento);
     }
     
+    @Override
+    public String toString() {
+        String stringToPrint= String.format(java.util.Locale.US,"{id_usuario:%s, correo:%s, num_telefono:%s, password:%s, correo_verificado:%b, nombres:%s, apellidos:%s, fechaNacimiento:%s};",getId_usuario(), getCorreo(), getNum_telefono(), getPassword(), getCorreo_verificado(), getNombres(), getApellidos(), getFechaNacimiento());
+        return stringToPrint;
+    }
+    
     public String getId_usuario() {
         return id_usuario;
     }
@@ -181,7 +187,7 @@ public final class Usuario {
     public List<Usuario> ListarUsuarios() throws SQLException{
         ConexionBD conexion=new ConexionBD();
         List<Usuario> listaUsuarios = new ArrayList<>();
-        String sql="select * from usuarios order by id_usuario asc";
+        String sql="select * from usuarios order by apellidos asc";
         System.out.println("Aqui");
         ResultSet rs=conexion.consultarBD(sql);
         Usuario u;
@@ -189,10 +195,12 @@ public final class Usuario {
             u=new Usuario();
             u.setId_usuario(rs.getString("id_usuario"));
             u.setCorreo(rs.getString("correo"));
+            u.setCorreo_verificado(Boolean.parseBoolean(rs.getString("correo_verificado")));
             u.setNum_telefono(rs.getString("num_telefono"));
             u.setPassword(rs.getString("password"));
             u.setNombres(rs.getString("nombres"));
             u.setApellidos(rs.getString("apellidos"));
+            u.setFechaNacimiento(rs.getString("fecha_nacimiento"));
             listaUsuarios.add(u);
         }
         conexion.cerrarConexion();
@@ -217,12 +225,6 @@ public final class Usuario {
             return null;
         }
     }
-    @Override
-    public String toString(){
-        return "Usuario{"+"id_usuario"+id_usuario+",correo="+correo+",num_telefono="+num_telefono+",password="+password+",nombres="+nombres+",apellidos="+apellidos+"";
-           
-    }
-    
-    
+
     
 }
