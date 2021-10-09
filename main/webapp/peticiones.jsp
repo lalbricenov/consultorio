@@ -21,7 +21,7 @@
         List<String> tareas = Arrays.asList(new String[]{
             "actualizarUsuario",
             "eliminarUsuario",
-            "listarUsuario",
+            "listarUsuarios",
             "guardarUsuario",});
 
         String proceso = "" + request.getParameter("proceso");
@@ -66,12 +66,14 @@
                 } else {
                     respuesta += "\"" + proceso + "\": false";
                 }
-            } else if (proceso.equals("listarUsuario")) {
+            } else if (proceso.equals("listarUsuarios")) {
                 try {
+                    System.out.println("Se está tratando de listar los usuarios");
                     List<Usuario> lista = u1.ListarUsuarios();
+                    System.out.println(lista);
                     respuesta += "\"" + proceso + "\": true,\"Usuarios\":" + new Gson().toJson(lista);
                 } catch (SQLException ex) {
-                    respuesta += "\"" + proceso + "\": true,\"Usuarios\":[]";
+                    respuesta += "\"" + proceso + "\": false,\"Usuarios\":[]";
                     Logger.getLogger(Usuario.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } else if (proceso.equals("actualizarUsuario")) {

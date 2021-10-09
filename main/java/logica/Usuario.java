@@ -181,7 +181,8 @@ public final class Usuario {
     public List<Usuario> ListarUsuarios() throws SQLException{
         ConexionBD conexion=new ConexionBD();
         List<Usuario> listaUsuarios = new ArrayList<>();
-        String sql="select *from usuarios order by id_usuarios asc";
+        String sql="select * from usuarios order by id_usuario asc";
+        System.out.println("Aqui");
         ResultSet rs=conexion.consultarBD(sql);
         Usuario u;
         while (rs.next()){
