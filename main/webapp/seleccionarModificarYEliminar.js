@@ -78,11 +78,11 @@ function llenarFormulario(response){
     console.log(datos)
     datos['passwordVerif'] = datos['password']
 
-    let inputs = document.querySelectorAll("#modificarUsuarioDiv input");
-    for (let input of inputs){
-        if(input.type != 'submit'){
-            let name = input.name;
-            input.value = datos[name];
+    let inputsYSelects = document.querySelectorAll("#modificarUsuarioDiv input, #modificarUsuarioDiv select");
+    for (let elemento of inputsYSelects){
+        if(elemento.type != 'submit'){
+            let name = elemento.name;
+            elemento.value = datos[name];
 
         }
     }
