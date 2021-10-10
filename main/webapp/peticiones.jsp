@@ -26,6 +26,7 @@
             "actualizarUsuario",
             "eliminarUsuario",
             "listarUsuarios",
+            "obtenerUsuario",
             "guardarUsuario",});
 
         String proceso = "" + request.getParameter("proceso");
@@ -36,21 +37,20 @@
             //iniciar los respectivos procesos
             if (proceso.equals("guardarUsuario")) { 
                 System.out.println("Se está tratando de guardar un usuario");
-                String tipoDoc = request.getParameter("tipoDoc");
-                String numDoc = request.getParameter("numDoc");
-                String id = tipoDoc + numDoc;
+                String tipo_documento = request.getParameter("tipo_documento");
+                String num_documento = request.getParameter("num_documento");
                 String correo = request.getParameter("correo");
-                String num_telefono = request.getParameter("numTel");
-                String password = request.getParameter("pass");
-                String passVerif = request.getParameter("passVerif");
-                
-                if (password.equals(passVerif))
+                String num_telefono = request.getParameter("num_telefono");
+                String password = request.getParameter("password");
+                String passwordVerif = request.getParameter("passwordVerif");
+                System.out.println(tipo_documento + num_documento);
+                if (password.equals(passwordVerif))
                 {
                     Boolean correo_verificado = false;
                     String nombres = request.getParameter("nombres");
                     String apellidos = request.getParameter("apellidos");
-                    String fechaNacimiento = request.getParameter("fechaNacimiento");
-                    u1 = new Usuario(id, correo, num_telefono, password, correo_verificado, nombres, apellidos, fechaNacimiento);
+                    String fecha_nacimiento = request.getParameter("fecha_nacimiento");
+                    u1 = new Usuario(num_documento, tipo_documento, correo, num_telefono, password, correo_verificado, nombres, apellidos, fecha_nacimiento);
 
                     if (u1.guardarUsuario()) {
                         respuesta.put(proceso, "true");
@@ -65,7 +65,8 @@
 
             } else if (proceso.equals("eliminarUsuario")) {
                 int id = Integer.parseInt(request.getParameter("id"));
-                if (u1.borrarUsuario("id")) {
+                System.out.println("Id a eliminar "+ id);
+                if (u1.borrarUsuario(id)) {
                     respuesta.put(proceso, "true");
                 } else {
                     respuesta.put(proceso, "false");
@@ -85,22 +86,42 @@
                 }
             } else if (proceso.equals("actualizarUsuario")) {
                 int id = Integer.parseInt(request.getParameter("id"));
+                String tipo_documento = request.getParameter("tipo_documento");
+                String num_documento = request.getParameter("num_documento");
                 String correo = request.getParameter("correo");
                 String num_telefono = request.getParameter("num_telefono");
                 String password = request.getParameter("password");
+                String passwordVerif = request.getParameter("passwordVerif");
                 Boolean correo_verificado = Boolean.parseBoolean(request.getParameter("correo_verificado"));
                 String nombres = request.getParameter("nombres");
                 String apellidos = request.getParameter("apellidos");
-                int edad = Integer.parseInt(request.getParameter("edad"));
-                
-                u1.actualizarUsuario();
-                
+                String fecha_nacimiento = request.getParameter("fecha_nacimiento");
+                // se crea el objeto de tipo usuario con todos los datos nuevos.
+                u1 = new Usuario(id, num_documento, tipo_documento, correo, num_telefono, password, correo_verificado, nombres, apellidos, fecha_nacimiento);
+                if (password.equals(passwordVerif))
+                {
+                    if (u1.actualizarUsuario()) {
+                        respuesta.put(proceso, "true");
+                    } else {
+                        respuesta.put(proceso, "false");
+                    }                    
+                }                
 
-                if (u1.actualizarUsuario()) {
+            }else if (proceso.equals("obtenerUsuario")){
+                try {
+                    String id_usuario = request.getParameter("id");
+                    System.out.println("Se está tratando de obtener un usuario");
+                    u1.obtenerUsuario(id_usuario);
                     respuesta.put(proceso, "true");
-                } else {
+                    
+                    System.out.println(u1);
+                    respuesta.put("data", new Gson().toJson(u1) );
+                } catch (SQLException ex) {
                     respuesta.put(proceso, "false");
+                    respuesta.put("data", "[]");
+                    Logger.getLogger(Usuario.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                
             }
 
         } else {

@@ -20,15 +20,19 @@
 <body>
     <div class="content">
         <h1>Registrarse</h1>
-        <a href="index.html?proceso=guardarUsuario">Inicio</a>
-        <form action="peticiones.jsp" method="POST">  
+        <a href="index.html">Inicio</a>
+        <form action="javascript:;" onsubmit="enviarDatos(this)">  
             <div class="mb-3">
                 <label class="form-label">Tipo de documento</label>
-                <input class="form-control" type="text" name="tipoDoc">
+                <select class="form-select" aria-label="Default select example" name="tipo_documento" required>
+                    <option selected value="CC">CC</option>
+                    <option value="CE">CE</option>
+                    <option value="RC">RC</option>
+                </select>
             </div>
             <div class="mb-3">
                 <label class="form-label">Número de documento</label>
-                <input class="form-control" type="text" name="numDoc">
+                <input class="form-control" type="text" name="num_documento" required>
             </div>
             <div class="mb-3">
                 <label class="form-label">Correo electrónico</label>
@@ -36,32 +40,33 @@
             </div>
             <div class="mb-3">
                 <label class="form-label">Número de teléfono</label>
-                <input class="form-control"  type="text" name="numTel">
+                <input class="form-control"  type="text" name="num_telefono" required>
             </div>
             <div class="mb-3">
                 <label class="form-label">Contraseña</label>
-                <input class="form-control" type="password" name="pass">
+                <input class="form-control" type="password" name="password" required>
             </div>
             <div class="mb-3">
                 <label class="form-label">Verificación contraseña</label>
-                <input class="form-control" type="password" name="passVerif">
+                <input class="form-control" type="password" name="passwordVerif" required>
             </div>
             <div class="mb-3">
                 <label class="form-label">Nombres</label>
-                <input class="form-control" type="text" name="nombres">
+                <input class="form-control" type="text" name="nombres" required>
             </div>
             <div class="mb-3">
                 <label class="form-label">Apellidos</label>
-                <input class="form-control" type="text" name="apellidos">     
+                <input class="form-control" type="text" name="apellidos" required>     
             </div>
             <div class="mb-3">
                 <label class="form-label">Fecha de nacimiento</label>
-                <input class="form-control" type="date" name="fechaNacimiento">     
+                <input class="form-control" type="date" name="fecha_nacimiento" required>     
             </div>
             
             <input type="submit" value="Registrarse"><br/>  
         </form>  
     </div>
-    
+    <script src="request.js"></script>
+    <script src="guardar.js"></script>
 </body>
 </html>
