@@ -16,10 +16,17 @@
 <body>
     <div class="content">
         <h1>Registrarse</h1>
-        <form action="add.jsp">  
+        <form action="peticiones.jsp">  
             <div class="mb-3">
                 <label class="form-label">Tipo de documento</label>
-                <input class="form-control" type="text" name="tipoDoc">
+                    <select required name="tipoDoc" class="form-control"  ng-model="cn.tipoDoc">
+                        <option>CC</option> 
+                        <option>TI</option>
+                        <option>RC</option>
+                        <option>NUIP</option> 
+                        <option>CE</option>
+                        <option>PA</option>
+                    </select>
             </div>
             <div class="mb-3">
                 <label class="form-label">Número de documento</label>
