@@ -193,8 +193,9 @@ public final class Usuario {
     
     public boolean actualizarUsuario(){
         ConexionBD conexion=new ConexionBD();
-        String sentencia="UPDATE 'usuarios' SET correo='" +this.correo+ "',tipo_documento='"+this.tipo_documento+ "',num_documento='"+this.num_documento+ "',num_telefono='"+this.num_telefono+"',password='"+this.password+"',correo_verificado='"+correo_verificado+"',"
+        String sentencia="UPDATE usuarios SET correo='" +this.correo+ "',tipo_documento='"+this.tipo_documento+ "',num_documento='"+this.num_documento+ "',num_telefono='"+this.num_telefono+"',password='"+this.password+"',correo_verificado="+correo_verificado+","
                 +"nombres='"+this.nombres+"',apellidos='"+this.apellidos+"' WHERE id_usuario=" +this.id_usuario+";";
+        System.out.print(sentencia);
         if (conexion.setAutoCommitBD(false)){
             if(conexion.actualizarBD(sentencia)){
                 conexion.commitBD();

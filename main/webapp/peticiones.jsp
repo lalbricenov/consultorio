@@ -85,7 +85,7 @@
                     Logger.getLogger(Usuario.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } else if (proceso.equals("actualizarUsuario")) {
-                int id = Integer.parseInt(request.getParameter("id"));
+                int id = Integer.parseInt(request.getParameter("id_usuario"));
                 String tipo_documento = request.getParameter("tipo_documento");
                 String num_documento = request.getParameter("num_documento");
                 String correo = request.getParameter("correo");

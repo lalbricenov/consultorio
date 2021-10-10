@@ -3,8 +3,9 @@ function enviarDatosModificar(form){
     for(const pair of new FormData(form)){
         data.append(pair[0], pair[1]);
     }
-    console.log(idUsuarioSeleccionado)
+    
     data.append('id_usuario', idUsuarioSeleccionado);
+    console.log(data.toString())
 
     httpPost('peticiones.jsp?proceso=actualizarUsuario', data, finalizarModificacion)
 }
@@ -19,3 +20,8 @@ function finalizarModificacion(response){
     }
 }
 
+let fondo = document.querySelector("#lista")
+fondo.onclick = ()=> {
+    modifDiv.style.display = "none";
+    fondo.style.opacity = "100%";
+}
