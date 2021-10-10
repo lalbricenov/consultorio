@@ -12,17 +12,17 @@
         <ul>
             <li>
                 <%
-                    String tipoDoc = request.getParameter("tipoDoc");
-                    String numDoc = request.getParameter("numDoc");
-                    String id = tipoDoc + numDoc;
+                    String tipo_documento = request.getParameter("tipo_documento");
+                    String num_documento = request.getParameter("num_documento");
+                    String id = tipo_documento + num_documento;
                     String correo = request.getParameter("correo");
-                    String numTel = request.getParameter("numTel");
-                    String pass = request.getParameter("pass");
-                    String passVerif = request.getParameter("passVerif");
+                    String num_telefono = request.getParameter("num_telefono");
+                    String password = request.getParameter("password");
+                    String passwordVerif = request.getParameter("passwordVerif");
                     String nombres = request.getParameter("nombres");
                     String apellidos = request.getParameter("apellidos");
                     
-                    Usuario prueba = new Usuario(id, correo, numTel, pass, false, nombres, apellidos);
+                    Usuario prueba = new Usuario(id, correo, num_telefono, password, false, nombres, apellidos);
                 %>
             </li>
             <li>

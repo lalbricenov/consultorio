@@ -29,7 +29,7 @@
         </p>
         <%
             
-            //Usuario prueba = newUsuario(id, correo, numTel, pass, corrVerif, nombres, apellidos);
+            //Usuario prueba = newUsuario(id, correo, num_telefono, password, corrVerif, nombres, apellidos);
         %>
 
     </form>  
